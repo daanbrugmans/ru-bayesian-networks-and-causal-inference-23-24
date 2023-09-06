@@ -1,1 +1,2 @@
-# ru-bayesian-networks-and-causal-inference-23-24
+# Bayesian Networks and Causal Inference 2023/2024 Assignments
+This repository contains the completed assignments for the Radboud University course Bayesian Networks and Causal Inference for the school year 2023-2024 as made by Daan Brugmans and ...
