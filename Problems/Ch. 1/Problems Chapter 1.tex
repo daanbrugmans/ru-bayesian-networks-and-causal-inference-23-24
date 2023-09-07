@@ -1,0 +1,83 @@
+\documentclass[a4paper]{article}
+% Typically the 'article' class is appropriate for assignments.
+% And we print it on a4, so we include that as well.
+
+\usepackage{a4wide}
+% To decrease the margins and allow more text on a page.
+
+\usepackage{graphicx}
+% To deal with including pictures.
+
+\usepackage{color}
+% To add color.
+
+\usepackage{enumerate}
+% To provide a little bit more functionality than with LaTeX's default
+% enumerate environment.
+
+\usepackage{array} 
+% To provide a little bit more functionality than with LaTeX's default
+% array environment.
+
+\usepackage[american]{babel}
+% Use this if you want to write the document in US English. It takes care of
+% (usually) proper hyphenation.
+% If you want to write your answers in Dutch, please replace 'american'
+% by 'dutch'.
+% Note that after a change it may be that the first compilation of LaTeX
+% fails. That is normal and caused by the fact that in auxiliary files
+% from previous runs, there may still be a \selectlanguage{american}
+% around, which is invalid if 'american' is not incorporated with babel.
+
+
+\title{Bayesian Networks and Causal Inference \\ Lecture Notes Problem Answers \\ Chapter 1}
+\author{Daan Brugmans \\ S1080742}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1.1}
+For my bachelor's degree, I did a graduation internship about the feasibility of training machine learning models on code, natural language relevant to the code and the relationships between the two.
+For this project, I focused on the \textit{Prediction} task of data science: 
+the goal of the internship was to develop something that could predict if a piece of code and a piece of natural language were related to one another.
+
+An example of a \textit{Description} task for this project could be generating a set of graphs describing the distribution of the data. 
+Although this does require that numerical features have already been made based on the natural language data, 
+a visualization of the distribution of these features could provide insight into the contents of the data.
+
+An example of a \textit{Causal inference} task for this project could be determining which factors in the natural language data had what effects on the corresponding code. 
+Within the business domain of my internship project, 
+the natural language data would describe the design and requirements for a piece of software, 
+and the code would be an implementation of that. 
+Already there is some sort of causality taking place: the code is the result of the natural language data. 
+One might construct a Bayesian network to visualize the relationships between different aspects of the natural language data, 
+like user stories, requirements, test cases, etc., 
+to determine what effects they have on the resulting code. 
+That should be an example of causal inference and with that knowledge, one might be able to determine how to update the design process so that it may lead to better code.
+
+\section*{Problem 1.2}
+\begin{itemize}
+    \item Income and marriage have a high positive correlation, because the union of two persons in marriage also results in the union of two persons' incomes.
+    An individual in the marriage does not see their earnings rise just because they marries someone; 
+    earnings only increase on the level of the union.
+    \item As the amount of fires increases, the demand for firefighters might rise. 
+    This demand is a direct result of the amount of fires occurring: the increase in fires is the cause and the increase in firefighters is the effect.
+    Therefore, changing the amount of firefighters will not have an effect on the amount of fires, as the relationship only goes one way.
+    \item People that hurry do so \textit{because} they are late. 
+    The claim about the data formulates this the other way around. 
+    Instead of being too late for meetings being the effect of hurrying, 
+    it is hurrying that is the effect of being too late for meetings.
+\end{itemize}
+
+\section*{Problem 1.3}
+\dots\\
+(Generating a dataset does not seem to work)
+
+\section*{Problem 1.4}
+\dots\\
+(Can't figure out how to build a dataset that gives the desired averages. I have tried giving Kim less data points than Pem, but having those few data points be higher on average. This did not do the trick for me.)
+
+\section*{Problem 1.5}
+
+\end{document}
