@@ -29,6 +29,10 @@
 % from previous runs, there may still be a \selectlanguage{american}
 % around, which is invalid if 'american' is not incorporated with babel.
 
+\usepackage{tikz}
+\usetikzlibrary{bayesnet}
+% For drawing Bayesian networks.
+
 
 \title{Bayesian Networks and Causal Inference \\ Lecture Notes Problem Answers \\ Chapter 1}
 \author{Daan Brugmans \\ S1080742}
@@ -79,5 +83,24 @@ That should be an example of causal inference and with that knowledge, one might
 (Can't figure out how to build a dataset that gives the desired averages. I have tried giving Kim less data points than Pem, but having those few data points be higher on average. This did not do the trick for me.)
 
 \section*{Problem 1.5}
+\begin{itemize}
+    \item In this case, stone size has a direct effect on the kind of treatment used. 
+    This means that stone size is a mediator for the treatment chosen. 
+    This may be represented like so: 
+    \begin{center}
+        \includegraphics*{Images/1.5.1.png}
+    \end{center}
+    Because stone size is a mediator, we should \textit{not} condition on it and use the aggregate data.
+    \item The chosen doctor for the surgery depends on two variables: the success rate of each doctor and the difficulty of the operation. 
+    The success rate itself is partly determined by the difficulty of the operation: 
+    generally, the more difficult an operation is, the lower the success rate of that operation will be. 
+    Abiding by the idea that the difficulty of an operation affects the success rate, and not the other way around, 
+    the relationship between the doctor chosen, surgery difficulty and success rate may be visualized as follows: 
+    \begin{center}
+        \includegraphics*{Images/1.5.2.png}
+    \end{center}
+    In this case, surgery difficulty is a confound for the success rate and the doctor chosen. 
+    Therefore, we should condition on surgery difficulty and use the segregated data.
+\end{itemize}
 
 \end{document}
