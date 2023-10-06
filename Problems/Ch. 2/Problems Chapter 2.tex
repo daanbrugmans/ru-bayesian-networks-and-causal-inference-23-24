@@ -41,11 +41,37 @@
 % For including code snippets with proper syntax highlighting and formatting.
 
 
-\title{Bayesian Networks and Causal Inference \\ Lecture Notes Problem Answers \\ Chapter ...}
+\title{Bayesian Networks and Causal Inference \\ Lecture Notes Problem Answers \\ Chapter 2}
 \author{Daan Brugmans \\ S1080742}
 \date{\today}
 
 \begin{document}
 \maketitle
+\section*{Problem 2.1}
+\begin{enumerate}
+    \item \begin{align*}
+        P(A = 0) &= \sum_b P(A = 0, b) \\
+        &= P(A = 0, B = 0) + P(A = 0, B = 1) \\
+        &= 0.3 + 0.4 \\
+        &= 0.7 \\
+        \\
+        P(B = 0) &= \sum_a P(a, B = 0) \\
+        &= P(A = 0, B = 0) + P(A = 1, B = 0) \\
+        &= 0.3 + 0.2 \\
+        &= 0.5
+    \end{align*}
+    \item \begin{align*}
+        P(A = 0 | B = 0) &= \frac{P(B = 0 | A = 0)P(A = 0)}{P(B = 0)} \\
+        &= \frac{P(B = 0, A = 0)}{P(A = 0)} \\
+        &= \frac{0.3}{0.7} \\
+        &\approx 0.429
+    \end{align*}
+    \item \begin{align*}
+        P(a | B = 0)
+    \end{align*}
+    \item \begin{align*}
+        P(B = 0 | A = 0)
+    \end{align*}
+\end{enumerate}
 
 \end{document}
