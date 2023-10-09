@@ -38,41 +38,48 @@ banking_dataset <- unaltered_data %>%
 
 ggplot(banking_dataset, aes(x=Age)) +
   geom_density()
+ggplot(banking_dataset, aes(x=Age)) +
+  geom_boxplot()
 
 ggplot(banking_dataset, aes(x=AnnualBalance)) +
   geom_density()
+ggplot(banking_dataset, aes(x=AnnualBalance)) +
+  geom_boxplot()
 
 ggplot(banking_dataset, aes(x=CallDuration)) +
   geom_density()
-
 ggplot(banking_dataset, aes(x=CallDuration, fill=HasSubscribedToDeposit)) +
   geom_density(alpha=0.5)
+ggplot(banking_dataset, aes(x=CallDuration)) +
+  geom_boxplot()
 
 ggplot(banking_dataset, aes(x=CurrentCampaignCalls)) +
   geom_bar()
 
-ggplot(banking_dataset, aes(x=EducationLevel)) +
+ggplot(banking_dataset, aes(x=EducationLevel, fill=EducationLevel)) +
   geom_bar()
 
-ggplot(banking_dataset, aes(x=HasDefault)) +
+ggplot(banking_dataset, aes(x=HasDefault, fill=HasDefault)) +
   geom_bar()
 
-ggplot(banking_dataset, aes(x=HasHousingLoan)) +
+ggplot(banking_dataset, aes(x=HasHousingLoan, fill=HasHousingLoan)) +
   geom_bar()
 
-ggplot(banking_dataset, aes(x=HasPersonalLoan)) +
+ggplot(banking_dataset, aes(x=HasPersonalLoan, fill=HasPersonalLoan)) +
   geom_bar()
 
-ggplot(banking_dataset, aes(x=JobCategory)) +
+ggplot(banking_dataset, aes(x=JobCategory, fill=JobCategory)) +
   geom_bar()
 
-ggplot(banking_dataset, aes(x=MaritalStatus)) +
+ggplot(banking_dataset, aes(x=MaritalStatus, fill=MaritalStatus)) +
   geom_bar()
 
 ggplot(banking_dataset, aes(x=PreviousCampaignsCalls)) +
   geom_bar()
+ggplot(banking_dataset, aes(x=PreviousCampaignsCalls)) +
+  geom_boxplot()
 
-ggplot(banking_dataset, aes(x=PreviousCampaignOutcome)) +
+ggplot(banking_dataset, aes(x=PreviousCampaignOutcome, fill=PreviousCampaignOutcome)) +
   geom_bar()
 
 ggplot(banking_dataset, aes(x=HasSubscribedToDeposit, fill=HasSubscribedToDeposit)) +
