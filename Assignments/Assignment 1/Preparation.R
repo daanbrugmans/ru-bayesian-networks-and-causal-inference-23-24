@@ -2,9 +2,6 @@ rm(list=ls())
 setwd("C:/Users/Daan/Documents/Projecten/ru-bayesian-networks-and-causal-inference-23-24")
 
 library(tidyverse)
-library(dagitty)
-library(bnlearn)
-library(lavaan)
 
 path_to_unaltered_dataset = paste(getwd(), "/Assignments/Data/bank-full.csv", sep="")
 unaltered_data <- read.csv(path_to_unaltered_dataset, sep=";", stringsAsFactors=T)
@@ -43,19 +40,29 @@ banking_dataset$HasPersonalLoan <- binary_factor_to_numeric(banking_dataset$HasP
 banking_dataset$HasSubscribedToDeposit <- binary_factor_to_numeric(banking_dataset$HasSubscribedToDeposit)
 
   # Remove outliers from dataset
-remove_outliers <- function(df_feature) {
-  outliers <- boxplot(df_feature)$out
-  df_feature[-which(df_feature %in% outliers)]
-}
+identify_outliers <- function(df_feature) {
+  first_quartile <- quantile(df_feature, probs=c(.25), na.rm=F)
+  third_quartile <- quantile(df_feature, probs=c(.75), na.rm=F)
+  interquartile_range <- IQR(df_feature)
 
-banking_dataset$Age <- remove_outliers(banking_dataset$Age)
-banking_dataset$AnnualBalance <- remove_outliers(banking_dataset$AnnualBalance)
-banking_dataset$CurrentCampaignCalls <- remove_outliers(banking_dataset$CurrentCampaignCalls)
-banking_dataset$PreviousCampaignsCalls <- remove_outliers(banking_dataset$PreviousCampaignsCalls)
+  lower_outlier_limit <- unname(first_quartile - 1.5 * interquartile_range)
+  upper_outlier_limit <- unname(third_quartile + 1.5 * interquartile_range)
+}
 
   # Head of data
 head(banking_dataset)
 
-  # Write fully prepared data to CSV
-path_to_prepared_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-prepared.csv", sep="")
+  # Write unnormalized data to CSV
+path_to_prepared_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-unnormalized.csv", sep="")
+write.csv(banking_dataset, file=path_to_prepared_dataset, row.names=F)
+
+  # Normalizing continuous variables
+banking_dataset$Age <- scale(banking_dataset$Age)
+banking_dataset$AnnualBalance <- scale(banking_dataset$AnnualBalance)
+banking_dataset$CallDuration <- scale(banking_dataset$CallDuration)
+banking_dataset$CurrentCampaignCalls <- scale(banking_dataset$CurrentCampaignCalls)
+banking_dataset$PreviousCampaignsCalls <- scale(banking_dataset$PreviousCampaignsCalls)
+
+  # Write normalized data to CSV
+path_to_prepared_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-normalized.csv", sep="")
 write.csv(banking_dataset, file=path_to_prepared_dataset, row.names=F)
