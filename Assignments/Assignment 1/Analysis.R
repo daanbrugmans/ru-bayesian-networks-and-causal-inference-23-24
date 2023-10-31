@@ -3,7 +3,7 @@ setwd("C:/Users/Daan/Documents/Projecten/ru-bayesian-networks-and-causal-inferen
 
 library(ggplot2)
 
-path_to_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-prepared.csv", sep="")
+path_to_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-normalized.csv", sep="")
 banking_dataset <- read.csv(path_to_dataset, sep=",", stringsAsFactors=FALSE)
 
   # Data Visualization
