@@ -39,16 +39,6 @@ banking_dataset$HasHousingLoan <- binary_factor_to_numeric(banking_dataset$HasHo
 banking_dataset$HasPersonalLoan <- binary_factor_to_numeric(banking_dataset$HasPersonalLoan)
 banking_dataset$HasSubscribedToDeposit <- binary_factor_to_numeric(banking_dataset$HasSubscribedToDeposit)
 
-  # Remove outliers from dataset
-identify_outliers <- function(df_feature) {
-  first_quartile <- quantile(df_feature, probs=c(.25), na.rm=F)
-  third_quartile <- quantile(df_feature, probs=c(.75), na.rm=F)
-  interquartile_range <- IQR(df_feature)
-
-  lower_outlier_limit <- unname(first_quartile - 1.5 * interquartile_range)
-  upper_outlier_limit <- unname(third_quartile + 1.5 * interquartile_range)
-}
-
   # Head of data
 head(banking_dataset)
 

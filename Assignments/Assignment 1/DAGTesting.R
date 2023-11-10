@@ -8,7 +8,7 @@ library(fastDummies)
 library(CCP)
 
 path_to_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-normalized.csv", sep="")
-banking_dataset <- read.csv(path_to_dataset, sep=",", stringsAsFactors=FALSE)
+banking_dataset <- read.csv(path_to_dataset, sep=",", stringsAsFactors=T)
 
 dag_initial <- dagitty('dag {
 Age [pos="-1.441,-1.094"]
@@ -49,5 +49,57 @@ PreviousCampaignsCalls -> PreviousCampaignOutcome
 ')
 
 plot(dag_initial)
-impliedConditionalIndependencies(dag_initial)
-localTests(dag_initial, banking_dataset, type="cis.pillai")
+
+independency_tests <- localTests(dag_initial, banking_dataset, type="cis.pillai")
+independency_tests
+plotLocalTestResults(independency_tests)
+
+get_canonical_correlations <- function(dag, dataset) {
+  canonical_correlations <- c()
+
+  for(variable_name in names(dag_initial)) {
+    for(parent in parents(dag_initial,variable_name)) {
+      other_parents <- setdiff(parents(dag_initial, variable_name), parent)
+      tst <- ciTest(
+        X=variable_name,
+        Y=parent,
+        Z=other_parents,
+        banking_dataset,
+        type="cis.pillai"
+      )
+
+      canonical_correlations <- rbind(
+        canonical_correlations,
+        data.frame(
+          list(
+            X=parent,
+            A="->",
+            Y=variable_name,
+            cor=tst[,"estimate"],
+            p=tst[,"p.value"]
+          )
+        )
+      )
+    }
+  }
+
+  canonical_correlations
+}
+
+get_dag_with_canonical_correlations <- function(dag, canonical_correlations) {
+  cancor_edge_coefficients <- paste(
+    canonical_correlations$X,
+    canonical_correlations$A,
+    canonical_correlations$Y,
+    "[beta=",signif(canonical_correlations$cor,2),"] ", collapse="\n"
+  )
+
+  dag_with_coefficients <- dagitty(cancor_edge_coefficients)
+  coordinates(dag_with_coefficients) <- coordinates(dag)
+
+  dag_with_coefficients
+}
+
+canonical_correlations <- get_canonical_correlations(dag_initial, banking_dataset)
+dag_initial_with_cancor <- get_dag_with_canonical_correlations(dag_initial, canonical_correlations)
+plot(dag_initial_with_cancor, show.coefficients=T)
