@@ -24,11 +24,6 @@ banking_dataset <- banking_dataset[!(banking_dataset$EducationLevel == "unknown"
 
   # Mark levels of ordinal variables
 banking_dataset$EducationLevel <- factor(banking_dataset$EducationLevel, levels=c("primary", "secondary", "tertiary"))
-#  # Replace character values of ordinal variables with numeric values
-#banking_dataset$EducationLevel <- str_replace(banking_dataset$EducationLevel, "primary", "1")
-#banking_dataset$EducationLevel <- str_replace(banking_dataset$EducationLevel, "secondary", "2")
-#banking_dataset$EducationLevel <- str_replace(banking_dataset$EducationLevel, "tertiary", "3")
-#banking_dataset$EducationLevel <- as.numeric(banking_dataset$EducationLevel)
 
   # Replace character values of binary variables with numeric values
 binary_factor_to_numeric <- function(df_feature) {
