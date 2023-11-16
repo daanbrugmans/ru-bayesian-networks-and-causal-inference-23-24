@@ -51,6 +51,7 @@ PreviousCampaignsCalls -> PreviousCampaignOutcome
 plot(dag_initial)
 
 independency_tests <- localTests(dag_initial, banking_dataset, type="cis.pillai")
+options(digits=3)
 independency_tests
 plotLocalTestResults(independency_tests)
 
@@ -91,7 +92,8 @@ get_dag_with_canonical_correlations <- function(dag, canonical_correlations) {
     canonical_correlations$X,
     canonical_correlations$A,
     canonical_correlations$Y,
-    "[beta=",signif(canonical_correlations$cor,2),"] ", collapse="\n"
+    "[beta=",signif(canonical_correlations$cor,2),"] ",
+    collapse="\n"
   )
 
   dag_with_coefficients <- dagitty(cancor_edge_coefficients)
@@ -103,3 +105,4 @@ get_dag_with_canonical_correlations <- function(dag, canonical_correlations) {
 canonical_correlations <- get_canonical_correlations(dag_initial, banking_dataset)
 dag_initial_with_cancor <- get_dag_with_canonical_correlations(dag_initial, canonical_correlations)
 plot(dag_initial_with_cancor, show.coefficients=T)
+
