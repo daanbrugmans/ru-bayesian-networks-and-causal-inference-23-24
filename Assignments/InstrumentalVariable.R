@@ -2,7 +2,6 @@ rm(list=ls())
 setwd("C:/Users/Daan/Documents/Projecten/ru-bayesian-networks-and-causal-inference-23-24")
 
 library(dagitty)
-library(ivreg)
 
   # Load banking dataset
 path_to_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-normalized.csv", sep="")
@@ -20,7 +19,7 @@ HasHousingLoan [pos="-0.140,-1.220"]
 JobCategory [pos="0,-1.5"]
 HasPersonalLoan [pos="-0.3,-1.3"]
 MaritalStatus [pos="-0.2,-1.65"]
-PreviousCampaignOutcome [pos="-.15,-.75"]
+PreviousCampaignOutcome [exposure,pos="-.15,-.75"]
 PreviousCampaignsCalls [pos="-.25,-1.15"]
 HasSubscribedToDeposit [outcome,pos="0,-.5"]
 Age -> AnnualBalance
@@ -55,6 +54,22 @@ exposures(dag_altered) <- "PreviousCampaignOutcome"
 outcomes(dag_altered) <- "HasSubscribedToDeposit"
 instrumentalVariables(dag_altered) # IV found: PreviousCampaignsCalls
 
-  # ah
-skunk <- ivreg(HasSubscribedToDeposit ~ PreviousCampaignOutcome | PreviousCampaignsCalls, data = banking_dataset)
-summary(skunk)
+  # Calculate biased regression line for IV
+biased_outcome_regression <- lm(HasSubscribedToDeposit ~ PreviousCampaignOutcome + PreviousCampaignsCalls, data = banking_dataset)
+biased_outcome_regression
+
+  # Calculate unbiased regression line for IV by d-separating on other paths from IV to outcome
+    # The IV must only influence the outcome through the exposure.
+    # That is, IV -> exposure -> outcome must be the only path through which IV can reach outcome.
+    # All other paths from IV to outcome must be d-separated out.
+    # This is done by calculating the regression line of the exposure given the IV and variables to be d-separated.
+    # This adjusts the exposure to the d-separated variables.
+    # The predictions of this regression are used as a replacement for the original exposure.variable.
+adjusted_exposure_regression <- lm(PreviousCampaignOutcome ~ PreviousCampaignsCalls + CurrentCampaignCalls + HasHousingLoan + JobCategory, data = banking_dataset)
+adjusted_exposure <- predict(adjusted_exposure_regression)
+
+unbiased_outcome_regression <- lm(HasSubscribedToDeposit ~ adjusted_exposure + CurrentCampaignCalls + HasHousingLoan + JobCategory, data = banking_dataset)
+unbiased_outcome_regression
+
+iv_estimate <- coef(unbiased_outcome_regression)[2]
+iv_estimate
