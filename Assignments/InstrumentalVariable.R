@@ -54,22 +54,33 @@ exposures(dag_altered) <- "PreviousCampaignOutcome"
 outcomes(dag_altered) <- "HasSubscribedToDeposit"
 instrumentalVariables(dag_altered) # IV found: PreviousCampaignsCalls
 
-  # Calculate biased regression line for IV
-biased_outcome_regression <- lm(HasSubscribedToDeposit ~ PreviousCampaignOutcome + PreviousCampaignsCalls, data = banking_dataset)
-biased_outcome_regression
-
   # Calculate unbiased regression line for IV by d-separating on other paths from IV to outcome
     # The IV must only influence the outcome through the exposure.
-    # That is, IV -> exposure -> outcome must be the only path through which IV can reach outcome.
-    # All other paths from IV to outcome must be d-separated out.
+    # That is, IV -> exposure -> (variables) -> outcome must be the only paths through which IV can reach outcome.
+      # Allowed/Include:
+        # IV -> exposure -> outcome
+        # IV -> exposure -> variable* -> outcome
+      # Disallowed/Exclude:
+        # IV -> variable* -> outcome
+        # IV -> variable* -> exposure -> outcome (this is a conditional IV)
     # This is done by calculating the regression line of the exposure given the IV and variables to be d-separated.
     # This adjusts the exposure to the d-separated variables.
     # The predictions of this regression are used as a replacement for the original exposure.variable.
-adjusted_exposure_regression <- lm(PreviousCampaignOutcome ~ PreviousCampaignsCalls + CurrentCampaignCalls + HasHousingLoan + JobCategory, data = banking_dataset)
+adjusted_exposure_regression <- lm(PreviousCampaignOutcome ~ PreviousCampaignsCalls, data = banking_dataset)
 adjusted_exposure <- predict(adjusted_exposure_regression)
 
-unbiased_outcome_regression <- lm(HasSubscribedToDeposit ~ adjusted_exposure + CurrentCampaignCalls + HasHousingLoan + JobCategory, data = banking_dataset)
+unbiased_outcome_regression <- lm(HasSubscribedToDeposit ~ adjusted_exposure, data = banking_dataset)
 unbiased_outcome_regression
 
 iv_estimate <- coef(unbiased_outcome_regression)[2]
 iv_estimate
+
+iv_estimate_confidence_interval <- confint(unbiased_outcome_regression)
+iv_estimate_confidence_interval
+
+  # Calculate biased regression line for IV
+biased_outcome_regression <- lm(HasSubscribedToDeposit ~ PreviousCampaignOutcome + PreviousCampaignsCalls, data = banking_dataset)
+biased_outcome_regression
+
+biased_iv_estimate_confidence_interval <- confint(biased_outcome_regression)
+biased_iv_estimate_confidence_interval
