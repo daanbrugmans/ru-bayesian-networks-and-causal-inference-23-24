@@ -2,6 +2,7 @@ rm(list=ls())
 setwd("C:/Users/Daan/Documents/Projecten/ru-bayesian-networks-and-causal-inference-23-24")
 
 library(dagitty)
+library(ggplot2)
 
   # Load banking dataset
 path_to_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-normalized.csv", sep="")
@@ -66,11 +67,19 @@ instrumentalVariables(dag_altered) # IV found: PreviousCampaignsCalls
     # This is done by calculating the regression line of the exposure given the IV and variables to be d-separated.
     # This adjusts the exposure to the d-separated variables.
     # The predictions of this regression are used as a replacement for the original exposure.variable.
-adjusted_exposure_regression <- lm(PreviousCampaignOutcome ~ PreviousCampaignsCalls, data = banking_dataset)
-adjusted_exposure <- predict(adjusted_exposure_regression)
+nonconditional.iv.estimate.regression <- function(outcome, exposure, IV, dataset, debias=T) {
+  if (debias) {
+    adjusted_exposure_regression <- lm(dataset[[exposure]] ~ dataset[[IV]], dataset)
+    adjusted_exposure <- predict(adjusted_exposure_regression)
+  } else {
+    adjusted_exposure <- dataset[[exposure]]
+  }
 
-unbiased_outcome_regression <- lm(HasSubscribedToDeposit ~ adjusted_exposure, data = banking_dataset)
-unbiased_outcome_regression
+  lm(dataset[[outcome]] ~ adjusted_exposure, dataset)
+}
+
+  # Calculate unbiased IV estimate
+unbiased_outcome_regression <- nonconditional.iv.estimate.regression("HasSubscribedToDeposit", "PreviousCampaignOutcome", "PreviousCampaignsCalls", banking_dataset)
 
 iv_estimate <- coef(unbiased_outcome_regression)[2]
 iv_estimate
@@ -78,8 +87,8 @@ iv_estimate
 iv_estimate_confidence_interval <- confint(unbiased_outcome_regression)
 iv_estimate_confidence_interval
 
-  # Calculate biased regression line for IV
-biased_outcome_regression <- lm(HasSubscribedToDeposit ~ PreviousCampaignOutcome + PreviousCampaignsCalls, data = banking_dataset)
+  # Calculate biased IV estimate
+biased_outcome_regression <- nonconditional.iv.estimate.regression("HasSubscribedToDeposit", "PreviousCampaignOutcome", "PreviousCampaignsCalls", banking_dataset, debias=F)
 biased_outcome_regression
 
 biased_iv_estimate_confidence_interval <- confint(biased_outcome_regression)
