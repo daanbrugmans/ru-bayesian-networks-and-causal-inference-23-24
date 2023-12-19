@@ -10,31 +10,31 @@ banking_dataset <- read.csv(path_to_dataset, sep=",", stringsAsFactors=T)
 
   # Load altered version of DAG
 dag_altered <- dagitty('dag {
-Age [pos="0,-2"]
-AnnualBalance [pos="-.3,-1.65"]
-CurrentCampaignCalls [pos="-.35,-1"]
-HasDefault [pos="-0.45,-1.5"]
-CallDuration [pos="-.35,-.5"]
-EducationLevel [pos="-0.15, -2"]
-HasHousingLoan [pos="-0.140,-1.220"]
-JobCategory [pos="0,-1.5"]
-HasPersonalLoan [pos="-0.3,-1.3"]
-MaritalStatus [pos="-0.2,-1.65"]
-PreviousCampaignOutcome [exposure,pos="-.15,-.75"]
-PreviousCampaignsCalls [pos="-.25,-1.15"]
-HasSubscribedToDeposit [outcome,pos="0,-.5"]
+Age [pos="-0.642,-3.240"]
+AnnualBalance [pos="-3.721,-3.257"]
+CallDuration [pos="-0.597,2.835"]
+CurrentCampaignCalls [pos="2.497,2.835"]
+EducationLevel [pos="-2.211,-2.203"]
+HasDefault [pos="-5.380,-2.121"]
+HasHousingLoan [pos="2.497,-1.067"]
+HasPersonalLoan [pos="-3.736,-1.083"]
+HasSubscribedToDeposit [outcome,pos="-0.627,1.090"]
+JobCategory [pos="-0.642,-1.067"]
+MaritalStatus [pos="2.497,-3.208"]
+PreviousCampaignOutcome [exposure,pos="2.497,1.090"]
+PreviousCampaignsCalls [pos="4.306,-0.359"]
 Age -> AnnualBalance
 Age -> EducationLevel
-Age -> JobCategory
 Age -> HasHousingLoan
+Age -> JobCategory
 Age -> MaritalStatus
 AnnualBalance -> HasDefault
 AnnualBalance -> HasPersonalLoan
-CurrentCampaignCalls -> CallDuration
-HasDefault -> HasPersonalLoan
 CallDuration -> HasSubscribedToDeposit
+CurrentCampaignCalls -> CallDuration
 EducationLevel -> AnnualBalance
 EducationLevel -> JobCategory
+HasDefault -> HasPersonalLoan
 HasHousingLoan -> HasSubscribedToDeposit
 JobCategory -> HasHousingLoan
 JobCategory -> HasPersonalLoan
@@ -75,11 +75,21 @@ nonconditional.iv.estimate.regression <- function(outcome, exposure, IV, dataset
     adjusted_exposure <- dataset[[exposure]]
   }
 
+  #adjusted_exposure_df <- as.data.frame(adjusted_exposure)
+  #ggplot(adjusted_exposure_df, aes(x=adjusted_exposure)) +
+    #geom_boxplot() + coord_flip()
+
   lm(dataset[[outcome]] ~ adjusted_exposure, dataset)
 }
 
+#adjusted_exposure_regression <- lm(PreviousCampaignOutcome ~ PreviousCampaignsCalls, banking_dataset)
+#adjusted_exposure <- predict(adjusted_exposure_regression)
+#adjusted_exposure_2 <- adjusted_exposure[adjusted_exposure > min(adjusted_exposure)]
+#plot(adjusted_exposure_2)
+
   # Calculate unbiased IV estimate
 unbiased_outcome_regression <- nonconditional.iv.estimate.regression("HasSubscribedToDeposit", "PreviousCampaignOutcome", "PreviousCampaignsCalls", banking_dataset)
+plot(unbiased_outcome_regression)
 
 iv_estimate <- coef(unbiased_outcome_regression)[2]
 iv_estimate
