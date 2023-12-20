@@ -8,6 +8,9 @@ library(ggplot2)
 path_to_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-normalized.csv", sep="")
 banking_dataset <- read.csv(path_to_dataset, sep=",", stringsAsFactors=T)
 
+  # Remove extreme outlier of candidate IV
+#banking_dataset <- banking_dataset[banking_dataset$PreviousCampaignsCalls < 100,]
+
   # Load altered version of DAG
 dag_altered <- dagitty('dag {
 Age [pos="-0.642,-3.240"]
@@ -75,17 +78,8 @@ nonconditional.iv.estimate.regression <- function(outcome, exposure, IV, dataset
     adjusted_exposure <- dataset[[exposure]]
   }
 
-  #adjusted_exposure_df <- as.data.frame(adjusted_exposure)
-  #ggplot(adjusted_exposure_df, aes(x=adjusted_exposure)) +
-    #geom_boxplot() + coord_flip()
-
   lm(dataset[[outcome]] ~ adjusted_exposure, dataset)
 }
-
-#adjusted_exposure_regression <- lm(PreviousCampaignOutcome ~ PreviousCampaignsCalls, banking_dataset)
-#adjusted_exposure <- predict(adjusted_exposure_regression)
-#adjusted_exposure_2 <- adjusted_exposure[adjusted_exposure > min(adjusted_exposure)]
-#plot(adjusted_exposure_2)
 
   # Calculate unbiased IV estimate
 unbiased_outcome_regression <- nonconditional.iv.estimate.regression("HasSubscribedToDeposit", "PreviousCampaignOutcome", "PreviousCampaignsCalls", banking_dataset)
