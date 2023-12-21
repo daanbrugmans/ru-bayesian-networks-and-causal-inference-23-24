@@ -9,7 +9,11 @@ path_to_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-normalized.c
 banking_dataset <- read.csv(path_to_dataset, sep=",", stringsAsFactors=T)
 
   # Remove extreme outlier of candidate IV
-#banking_dataset <- banking_dataset[banking_dataset$PreviousCampaignsCalls < 100,]
+#ggplot(banking_dataset, aes(x=PreviousCampaignsCalls)) + geom_boxplot()
+#banking_dataset <- banking_dataset[banking_dataset$PreviousCampaignsCalls < 100,] # Major outlier removed
+#banking_dataset <- banking_dataset[banking_dataset$PreviousCampaignsCalls < 17.5,]
+#banking_dataset <- banking_dataset[banking_dataset$PreviousCampaignsCalls < 12.5,]
+#banking_dataset <- banking_dataset[banking_dataset$PreviousCampaignsCalls < 0,] #No outliers
 
   # Load altered version of DAG
 dag_altered <- dagitty('dag {
