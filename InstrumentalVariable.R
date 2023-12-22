@@ -5,7 +5,7 @@ library(dagitty)
 library(ggplot2)
 
   # Load banking dataset
-path_to_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-normalized.csv", sep="")
+path_to_dataset = paste(getwd(), "/Data/banking-dataset-normalized.csv", sep="")
 banking_dataset <- read.csv(path_to_dataset, sep=",", stringsAsFactors=T)
 
   # Remove extreme outlier of candidate IV

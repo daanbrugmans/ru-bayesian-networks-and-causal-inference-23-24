@@ -3,7 +3,7 @@ setwd("C:/Users/Daan/Documents/Projecten/ru-bayesian-networks-and-causal-inferen
 
 library(tidyverse)
 
-path_to_unaltered_dataset = paste(getwd(), "/Assignments/Data/bank-full.csv", sep="")
+path_to_unaltered_dataset = paste(getwd(), "/Data/bank-full.csv", sep="")
 unaltered_data <- read.csv(path_to_unaltered_dataset, sep=";", stringsAsFactors=T)
 
   # Selecting and renaming variables
@@ -40,7 +40,7 @@ banking_dataset$HasSubscribedToDeposit <- binary_factor_to_numeric(banking_datas
 head(banking_dataset)
 
   # Write unnormalized data to CSV
-path_to_prepared_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-unnormalized.csv", sep="")
+path_to_prepared_dataset = paste(getwd(), "/Data/banking-dataset-unnormalized.csv", sep="")
 write.csv(banking_dataset, file=path_to_prepared_dataset, row.names=F)
 
   # Normalizing continuous variables
@@ -51,5 +51,5 @@ banking_dataset$CurrentCampaignCalls <- scale(banking_dataset$CurrentCampaignCal
 banking_dataset$PreviousCampaignsCalls <- scale(banking_dataset$PreviousCampaignsCalls)
 
   # Write normalized data to CSV
-path_to_prepared_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-normalized.csv", sep="")
+path_to_prepared_dataset = paste(getwd(), "/Data/banking-dataset-normalized.csv", sep="")
 write.csv(banking_dataset, file=path_to_prepared_dataset, row.names=F)

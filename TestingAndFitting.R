@@ -9,7 +9,7 @@ library(dagitty)
 library(fastDummies)
 library(CCP)
 
-path_to_dataset = paste(getwd(), "/Assignments/Data/banking-dataset-normalized.csv", sep="")
+path_to_dataset = paste(getwd(), "/Data/banking-dataset-normalized.csv", sep="")
 banking_dataset <- read.csv(path_to_dataset, sep=",", stringsAsFactors=T)
 
 dag_initial <- dagitty('dag {
@@ -54,7 +54,7 @@ plot(dag_initial)
 
 independency_tests <- localTests(dag_initial, banking_dataset, type="cis.pillai")
 plotLocalTestResults(independency_tests)
-path_to_local_tests_csv = paste(getwd(), "/Assignments/Data/cis-pillai-test-results.csv", sep="")
+path_to_local_tests_csv = paste(getwd(), "/Data/cis-pillai-test-results.csv", sep="")
 write.csv(format(independency_tests[, 0:2], digits=2), file=path_to_local_tests_csv, row.names=T)
 
 get_canonical_correlations <- function(dag, dataset) {
