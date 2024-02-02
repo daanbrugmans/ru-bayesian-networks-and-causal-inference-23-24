@@ -1,4 +1,4 @@
-# Bayesian Networks and Causal Inference 2023/2024 Assignments
+# Bayesian Networks and Causal Inference 2023/2024
 
 This repository contains the fulfillment of the two assignments for the Radboud University course [NWI-IMC012 Bayesian Networks and Causal Inference](https://www.ru.nl/courseguides/science/vm/osirislinks/imc/nwi-imc012/) for the school year 2023-2024 as made by [Daan Brugmans](https://github.com/daanbrugmans) and Maarten Beerenschot.
 The course's assignments consisted of two research projects to be performed by teams of students, one on the topic of Bayesian Networks and one on the topic of Causal Inference.
